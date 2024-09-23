@@ -2,6 +2,7 @@ import { useState } from "react";
 import Success from "../components/Success";
 
 export default function Register() {
+    
     // form/inputs states
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
