@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Success from "../components/Success";
+import Layout from "../components/Layout";
 
 export default function Register() {
     
@@ -79,7 +80,8 @@ const handleSubmit = (e)=>{
 
 
     return (
-        <div className="w-screen h-screen bg-black flex items-center justify-center">
+        <Layout>
+            <div className="w-screen h-screen bg-black flex items-center justify-center">
             <div className=" w-1/2 h-3/4 m-auto pt-[10%] bg-[url('./assets/bf_image.jpg')]">
 
                 <div className="flex p-8">
@@ -122,5 +124,6 @@ const handleSubmit = (e)=>{
                 </div>
             </div>
         </div>
+        </Layout>
     );
 }

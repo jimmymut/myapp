@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
+import Layout from "../components/Layout";
 
 const schema = yup.object({
     name: yup.string().min(3, "Too short").max(50).required("Name is required!"),
@@ -29,7 +30,8 @@ export default function SignUpHookForm() {
 
 
     return (
-        <div className="w-screen h-screen bg-black flex items-center justify-center">
+        <Layout>
+            <div className="w-screen h-screen bg-black flex items-center justify-center">
             <div className=" w-1/2 h-3/4 m-auto pt-[10%] bg-[url('./assets/bf_image.jpg')]">
 
                 <div className="flex p-8">
@@ -71,5 +73,6 @@ export default function SignUpHookForm() {
                 </div>
             </div>
         </div>
+        </Layout>
     );
 }
