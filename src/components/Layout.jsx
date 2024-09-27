@@ -4,11 +4,11 @@ export default function Layout({children}){
     return(
         <div className="">
             <header>
-                <nav>
-                    <Link to="/">Home</Link>
-                    <Link to="/signup">Signup</Link>
-                    <Link to="/about">About</Link>
-                    <Link to="/dashboard">Dasdhboard</Link>
+                <nav className="flex gap-2">
+                    <Link className="text-blue-600" to="/">Home</Link>
+                    <Link className="text-blue-600" to="/signup">Signup</Link>
+                    <Link className="text-blue-600" to="/about">About</Link>
+                    <Link className="text-blue-600" to="/dashboard/users">Dasdhboard</Link>
                 </nav>
             </header>
             {children}

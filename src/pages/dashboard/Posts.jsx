@@ -1,6 +1,6 @@
-export default function posts(){
+export default function Posts(){
     return (
-        <div className="ml-54">
+        <div className="">
             <h1>Posts list</h1>
         </div>
     )

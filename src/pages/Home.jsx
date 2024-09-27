@@ -1,22 +1,10 @@
-import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import {MoonLoader, CircleLoader} from "react-spinners";
-import axios from "axios";
+import {MoonLoader} from "react-spinners";
+import useFetchPosts from "../hooks/useFetchPosts";
+
 
 export default function Home() {
-    const [loading, setLoading] = useState(false);
-    const [posts, setPosts] = useState([]);
-    const api_url = import.meta.env.VITE_API_URL;
-
-    useEffect(()=>{
-        setLoading(true)
-        axios.get(`${api_url}/posts`).then((res)=>{
-            setPosts(res.data);
-        })
-        .catch(error=> console.log(error))
-        .finally(()=> setLoading(false))
-    }, [])
-
+    const {loading, posts } = useFetchPosts();
     return (
 
         <div className="">

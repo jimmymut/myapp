@@ -1,6 +1,6 @@
 export default function Ulbums(){
     return (
-        <div className="ml-54">
+        <div className="">
             <h1>Ulbums list</h1>
         </div>
     )
