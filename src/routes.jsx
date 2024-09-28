@@ -7,8 +7,9 @@ import Users from './pages/dashboard/Users';
 import Posts from './pages/dashboard/Posts';
 import Ulbums from './pages/dashboard/Ulbums';
 import About from './pages/About';
-// import ClassComponent from './pages/ClassComp';
-
+import { NotFound } from './pages/NotFound';
+import { FullPost } from './pages/FullPost';
+import Login from './pages/Login';
 
 export default function AppRoutes() {
     return (
@@ -17,12 +18,14 @@ export default function AppRoutes() {
             <Route exact path='/about' element={<About />} />
             <Route exact path='/register' element={<Register />} />
             <Route exact path='/signup' element={<SignUpHookForm />} />
-            {/* <Route exact path='/classcomponent' element={<ClassComponent />} /> */}
+            <Route exact path='/login' element={<Login />} />
+            <Route exact path='/posts/:postId' element={<FullPost />} />
             <Route exact path='/dashboard' element={<Dashboard />}>
                 <Route path='users' element={<Users />} />
                 <Route path='posts' element={<Posts />} />
                 <Route path='ulbums' element={<Ulbums />} />
             </Route>
+            <Route exact path='*' element={<NotFound />} />
         </Routes>
     );
 }

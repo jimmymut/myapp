@@ -1,22 +1,25 @@
 import Layout from "../components/Layout";
-import {MoonLoader} from "react-spinners";
-import useFetchPosts from "../hooks/useFetchPosts";
+import {ClipLoader} from "react-spinners";
+import useFetch from "../hooks/useFetch";
+import { PostCard } from "../components/PostCard";
+import { useContext } from "react";
+import { AppContext } from "../App";
 
 
 export default function Home() {
-    const {loading, posts } = useFetchPosts();
-    return (
+    const api_url = import.meta.env.VITE_API_URL;
+    const {loading } = useFetch(`${api_url}/posts`, "posts");
+    const { state } = useContext(AppContext);
+    const posts = state.posts.data;    
 
-        <div className="">
-            {loading? <div className="flex items-center justify-center h-screen"><MoonLoader/></div>:<Layout>
-            <div className="w-full h-screen bg-black text-white">
-            <h1>Posts</h1>
+    return (
+        <div className="bg-gray-200">
+            {loading? <div className="flex items-center justify-center h-screen"><ClipLoader color="blue" size={50}/></div>:<Layout>
+            <h1 className="w-full text-center font-bold text-3xl pb-5 pt-20">Posts</h1>
+            <div className="flex flex-wrap gap-5 justify-center">
             {!posts.length?<p>No posts found!</p>:
-            posts.map((p, index)=>(
-                <div className="" key={index}>
-                    <h2>{p.title}</h2>
-                    <p>{p.body}</p>
-                </div>
+            posts.map((post)=>(
+                <PostCard post={post} key={post.id}/>
             ))
             }
         </div>

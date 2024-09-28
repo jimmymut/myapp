@@ -1,24 +1,62 @@
-// import Home from "./pages/Home"
-
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes";
-import { createContext } from "react";
+import { createContext, useReducer } from "react";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export const UserContext = createContext(null);
+export const AppContext = createContext(null);
 
-
-const value = {
-  name: "Mutabazi",
-  email: "myemail@gmailcom"
+// A reducer function to be used with useReducer
+const reducer = (state, action) =>{  
+  switch(action.type){
+    case "auth":
+      return{
+        ...state,
+        user: action.user
+      };
+    case "users":
+      return{
+        ...state,
+        users: action.payload
+      };
+    case "posts":
+      return{
+        ...state,
+        posts: action.payload
+      };
+    case "add/user":
+      return{
+        ...state,
+        users: {
+          ...state.users,
+          data: [action.payload, ...state.users.data]
+        }
+      };
+    default:
+      return state;
+  }
 }
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, {
+    user: null,
+    users:{
+      next_fetch_at: new Date(),
+      data: []
+    },
+    posts:{
+      next_fetch_at: new Date(),
+      data: []
+    }
+  })
 
   return (
     <BrowserRouter>
-    <UserContext.Provider value={value}>
-    <AppRoutes/>
-    </UserContext.Provider>
+      <AppContext.Provider value={{state, dispatch}}>
+        {/* we need this component in order toastify to work, now we can use toast function in our application and it will work */}
+        <ToastContainer />
+        <AppRoutes />
+      </AppContext.Provider>
     </BrowserRouter>
   )
 }

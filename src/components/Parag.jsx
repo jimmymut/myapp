@@ -1,6 +1,6 @@
 const Paragraph = (props) => {
     return (
-        <p>{props.body}</p>
+        <p className={props.classes}>{props.body}</p>
     )
 }
 
