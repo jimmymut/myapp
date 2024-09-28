@@ -1,43 +1,73 @@
+// In this page I not using the custom popup for success or errors
+// instead I will use a library called react-toastify
+// to show messages
+// first we neet to install it *npm i react-toastify*
+
+// Then we need  to import these two in the use the in App.jsx
+// import { ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import signupSchema from "../validators/auth";
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
+import { loginSchema } from '../validators/auth';
+import { useContext, useState } from 'react';
+import { AppContext } from '../App';
 import delay from '../helpers/delay';
 
-// Removed the schema to validators/auth.js
-
-export default function SignUpHookForm() {
+export default function Login() {
     const [isSubitting, setIsSubitting] = useState(false);
+    const { dispatch } = useContext(AppContext);
+    // The hook that helps us to redirect/navigate to another route
     const navigate = useNavigate();
+
+    // This handles the form
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(signupSchema)
+        resolver: yupResolver(loginSchema)
     });
 
+
+    // The function that submits the data to the server
+    // if the validation succeeds
     const onSubmit = async (data) => {
-        setIsSubitting(true);
-        // Here, we submit the data to backend
+        setIsSubitting(true)
+        // Here the logic to submit to the server
+        // Using axios or fetch
 
-        // let add a delay here just to see the loading state
-        // this one should not be used in app
+        // for now lets get the user from localstorage
+        // since localStorage is fast, we can not see the loading state
+        // let's add a delay of 2 seconds to mitigate the actual request to the api
         await delay(2000);
-
-        //for now, lets save to localstorage since we are not having the backend yet
-        localStorage.setItem("user", JSON.stringify(data));
-
-        // after a user successifully registered, depending on backend if automatically login a user,
-        // then it most likely to return a token and we save it in localStorage for future
-        // use with the requests that require authorization  and tthen redirect a user to a
-        // dashboard or the another page depending on the previllage
-        // or we redirect this user to login page
-        toast.success("Your account is successfully created!");
+        const user = localStorage.getItem("user");
+        if (!user) {
+            toast.error("User not found");
+            return;
+        }  
+        const userObject = JSON.parse(user);
+        //check if the email and password match
+        if (data.password === userObject.password && data.email === userObject.email) {
+            const { name, email } = userObject;
+            // we update the state
+            dispatch({ type: "auth", user: { name, email } });
+            toast.success("successfully logged in");
+            
+            // If a user successifully login and has a dashbord
+            // we redirect that user to the dashbord or else where if
+            // the this kind of user does not have a dashbord because 
+            // some kinds of users in the application may not have a dashbord
+            // this is an example of how to redirect
+            navigate("/dashboard/users");
+            
+        }else{
+            // If the login fails, the user stays on this page.
+            toast.error("Invalid credentials");
+        }
         setIsSubitting(false);
-        navigate("/login");
     }
 
     return (
@@ -46,19 +76,12 @@ export default function SignUpHookForm() {
                 <div className="flex min-h-[60vh] m-8 rounded-lg border-2 border-white justify-between items-center gap-8">
                     <div className="w-52 relative text-white ml-3">
                         <div className="py-3 absolute top-1/2 -left-10 -translate-y-1/2 bg-gradient-to-r from-[#15342e] z-10 pl-12">
-                            <h1 className="font-bold mb-3">Sign Up</h1>
-                            <p>sign up to unlock exciting eperience with our services</p>
+                            <h1 className="font-bold mb-3">Login</h1>
+                            <p>Login to unleash the full power of our services</p>
                         </div>
                     </div>
                     <form className="min-h-[60vh] bg-white py-4 px-8" onSubmit={handleSubmit(onSubmit)}>
-                        <h2 className="font-bold mb-3">Let's Get Started</h2>
-                        <div className="mb-2">
-                            <label htmlFor="">Name</label>
-                            <input type="text" className={`w-full border border-gray-400 px-2 rounded focus:outline-none ${errors.name ? 'border-red-600' : 'border-green-600'}`} placeholder="Type your name"
-                                {...register("name")} />
-
-                            {errors.name && <p className=" text-red-600 ">{errors.name.message}</p>}
-                        </div>
+                        <h2 className="font-bold mb-3">Let's Get In</h2>
                         <div className="mb-2">
                             <label htmlFor="">email</label>
                             <input type="text" className={`w-full border border-gray-400 px-2 rounded focus:outline-none ${errors.email ? 'border-red-600' : 'border-green-600'}`} placeholder="Type your email"
@@ -78,7 +101,7 @@ export default function SignUpHookForm() {
                             <button type="submit" disabled={isSubitting} className="w-full bg-blue-700 rounded text-white cursor-pointer py-1" >{isSubitting ? "Processing..." : "Submit"}</button>
 
                         </div>
-                        <p>Have an account? <Link className="text-blue-600" to="/login">Login</Link> or <Link className="text-blue-600" to="/">Home</Link></p>
+                        <p>No account? <Link className="text-blue-600" to="/signup">Sign Up</Link> or <Link className="text-blue-600" to="/">Home</Link></p>
                     </form>
                 </div>
             </div>

@@ -1,18 +1,14 @@
-import { Link } from "react-router-dom";
+import NavBar from "./NavBar";
+import { Footer } from "./Footer";
 
 export default function Layout({children}){
     return(
-        <div className="">
-            <header>
-                <nav>
-                    <Link to="/">Home</Link>
-                    <Link to="/signup">Signup</Link>
-                    <Link to="/about">About</Link>
-                    <Link to="/dashboard">Dasdhboard</Link>
-                </nav>
-            </header>
-            {children}
-            <footer>&copy;2024 training</footer>
+        <div className="min-h-screen flex flex-col">
+            <NavBar/>
+            <main className="flex-1">
+                {children}
+            </main>
+            <Footer/>
         </div>
     )
 }
