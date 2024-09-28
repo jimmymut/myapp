@@ -46,6 +46,7 @@ export default function Login() {
         const user = localStorage.getItem("user");
         if (!user) {
             toast.error("User not found");
+            setIsSubitting(false);
             return;
         }  
         const userObject = JSON.parse(user);
